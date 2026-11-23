@@ -40,9 +40,17 @@ The regression script accepts a CSV file with one row per patient and the follow
 | `mtbc` | MTBC status: negative = 0; positive = 1 |
 | `age` | Age in years |
 | `sex` | Sex category |
-| `province` | Province category |
-| `region` | Geographic region category |
+| `province` | Province-level administrative division. Use the standard full Chinese name or the English name listed below. |
 | Pathogen columns | One column per pathogen: negative = 0; positive = 1 |
+
+The script derives `region` from `province`. If the input already contains a `region` column, the derived values take precedence. Records with missing province labels are excluded from regional strata. Unrecognized province labels raise an input error.
+
+| Region | Province-level administrative divisions |
+|---|---|
+| North | Beijing, Gansu, Hebei, Heilongjiang, Inner Mongolia, Jilin, Liaoning, Ningxia, Qinghai, Shaanxi, Shanxi, Tianjin, Xinjiang |
+| East | Anhui, Fujian, Jiangsu, Jiangxi, Shandong, Shanghai, Zhejiang |
+| Central-Southern | Guangdong, Guangxi, Hainan, Henan, Hubei, Hunan |
+| Southwest | Chongqing, Guizhou, Sichuan, Tibet, Yunnan |
 
 Example command:
 

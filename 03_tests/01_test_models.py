@@ -19,4 +19,30 @@ class ModelTests(unittest.TestCase):
         self.assertEqual(m.COVARIATES["sex"],["age","province"])
         self.assertEqual(m.COVARIATES["age"],["sex","province"])
         self.assertEqual(m.COVARIATES["region"],["age","sex"])
+
+    def test_regions_derived_from_province(self):
+        provinces = [
+            " \u9ed1\u9f99\u6c5f\u7701 ", "beijing", "Shaanxi",
+            "\u4e0a\u6d77\u5e02", "Guangxi", "Tibet",
+        ]
+        rng = np.random.default_rng(42)
+        n = 90 * len(provinces)
+        frame = pd.DataFrame({
+            "province": np.repeat(provinces, 90),
+            "age": rng.integers(1, 90, n),
+            "sex": rng.choice(["Female", "Male"], n),
+            "mtbc": rng.integers(0, 2, n),
+            "outcome": rng.integers(0, 2, n),
+        })
+        expected = {"North": 270, "East": 90, "Central-Southern": 90, "Southwest": 90}
+        for source in (frame, frame.assign(region="outdated")):
+            results = m.run(source, ["outcome"]).query("model == 'region'")
+            self.assertEqual(results.set_index("group")["n"].to_dict(), expected)
+            self.assertEqual(set(results["status"]), {"ok"})
+
+    def test_missing_and_unrecognized_provinces(self):
+        self.assertTrue(m.derive_region(pd.Series([None, " "])).isna().all())
+        with self.assertRaisesRegex(ValueError, "Unrecognized province labels"):
+            m.derive_region(pd.Series(["Unknown province"]))
+
 if __name__ == "__main__":unittest.main()
