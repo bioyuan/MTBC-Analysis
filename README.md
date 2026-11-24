@@ -78,4 +78,6 @@ Age groups are 0–14, 15–44, 45–64, and ≥65 years. For stratified models,
 | `08_region_counts.csv` | Region-stratified pathogen counts |
 | `09_sex_counts.csv` | Sex-stratified pathogen counts |
 
-In the count tables, `mtbc_negative_positive` and `mtbc_positive_positive` denote pathogen-positive counts in the MTBC-negative and MTBC-positive groups, respectively. The `covariates_used` fields in the supplied stratified estimate tables record age, province, and sex for the age table, and include date for the sex and region tables; these recorded specifications differ from the stratified model settings described above.
+In the count tables, `mtbc_negative_positive` and `mtbc_positive_positive` denote pathogen-positive counts in the MTBC-negative and MTBC-positive groups, respectively.
+
+The updated `covariates_used` labels reflect the adjustment sets listed above, with `prov` denoting province. The ORs, confidence intervals, p-values, and sample sizes were carried over from the archived results.
